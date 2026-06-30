@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routers import employees
 from routers import checklist
+from routers import schedule
 
 app = FastAPI(title = "Meridian API")
 app.add_middleware( # port cross connection
@@ -15,6 +16,7 @@ app.add_middleware( # port cross connection
 
 app.include_router(employees.router)
 app.include_router(checklist.router)
+app.include_router(schedule.router)
 
 @app.get("/")
 def root():

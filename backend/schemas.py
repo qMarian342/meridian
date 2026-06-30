@@ -1,4 +1,4 @@
-# define accepted json data - pydantic describe API 
+# define accepted json data - pydantic describe API*
 
 from pydantic import BaseModel, EmailStr
 from datetime import date, datetime 
