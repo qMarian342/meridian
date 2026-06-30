@@ -1,4 +1,4 @@
-# endpoint for checklist | left join 
+# endpoint for checklist | left join
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
