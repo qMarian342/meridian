@@ -1,6 +1,6 @@
 # defining tables as class for SQLAlchemy
 
-from sqlalchemy import Column, Integer, String, Date, Boolean, ForeignKey, TIMESTAMP, ENUM
+from sqlalchemy import Column, Integer, String, Date, Boolean, ForeignKey, TIMESTAMP, Enum
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from database import Base
