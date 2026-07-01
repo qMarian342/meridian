@@ -17,8 +17,8 @@ def get_today_schedule(db: Session = Depends(get_db)):
 
     schedule = (
         db.query(EmployeeSchedule).options(
-            joinedload(EmployeeSchedule.employee),
-            joinedload(Employee.department)
+            joinedload(EmployeeSchedule.employee)
+            .joinedload(Employee.department)
         ).filter(EmployeeSchedule.day_of_week == today)
         .all()
     )
