@@ -20,7 +20,7 @@ def get_checklist_for_employee(employee_id: int, db: Session = Depends(get_db)):
     if employee is None:
         raise HTTPException(status_code=404, detail="Employee not found")
 
-    all_tasks = db.query(ChecklistTask).order_by(ChecklistTask.display_order).all
+    all_tasks = db.query(ChecklistTask).order_by(ChecklistTask.display_order).all()
 
     existing_progress = (
         db.query(EmployeeChecklistProgress)
@@ -33,7 +33,7 @@ def get_checklist_for_employee(employee_id: int, db: Session = Depends(get_db)):
     result = []
 
     for task in all_tasks:
-        progress = progress_by_task_id(task.id)
+        progress = progress_by_task_id.get(task.id)
         result.append(
             ChecklistItemOut(
                 task_id = task.id,
@@ -43,7 +43,7 @@ def get_checklist_for_employee(employee_id: int, db: Session = Depends(get_db)):
             )
         )
 
-        return result
+    return result
     
 
 # PATCH -- upsert | task status 
