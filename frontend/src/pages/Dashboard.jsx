@@ -72,6 +72,13 @@ export default function Dashboard() {
     const totalCount = checklist.length;
     const progressPercent =
         totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
+        const officeToday = schedule.filter((entry) => entry.location === "office");
+
+    const me = employees.find((e) => e.id === CURRENT_EMPLOYEE_ID);
+    const myDepartment = me?.department.name;
+    const team = employees.filter(
+            (e) => e.department.name === myDepartment && e.id !== CURRENT_EMPLOYEE_ID
+        );    
 
     return (
         <div>
@@ -112,40 +119,40 @@ export default function Dashboard() {
                 </section>
 
                 {/* SCHEDULE */}
-                <section className="dashboard-section">
-                    <h2 className="section-title">
-                        Who is at office today?
-                        <span className="section-counter">
-                            {schedule.length} 
-                        </span>
-                    </h2>
+            <section className="dashboard-section">
+                <h2 className="section-title">
+                     Who is at office today?
+                <span className="section-counter">{officeToday.length}</span>
+                </h2>
 
+                {officeToday.length === 0 ? (
+                    <p className="status-message">No one is in the office today.</p>
+                ) : (
                     <div className="cards-list">
-                        {schedule.map((entry) => (
-                            <ScheduleCard
-                                key={entry.employee_id}
-                                entry={entry}
-                            />
+                        {officeToday.map((entry) => (
+                            <ScheduleCard key={entry.employee_id} entry={entry} />
                         ))}
                     </div>
-                </section>
+                )}
+            </section>
 
                 {/* TEAM */}
                 <section className="dashboard-section full-width">
-                    <h2 className="section-title">
-                        Your team!
-                        <span className="section-counter">
-                            {employees.length} total
-                        </span>
-                    </h2>
+                <h2 className="section-title">
+                    Your team{myDepartment ? ` — ${myDepartment}` : ""}
+                    <span className="section-counter">{team.length}</span>
+                </h2>
 
+                {team.length === 0 ? (
+                    <p className="status-message">No teammates in your department yet.</p>
+                ) : (
                     <div className="cards-grid">
-                        { }
-                        {employees.slice(0, 4).map((employee) => (
+                        {team.slice(0, 4).map((employee) => (
                             <UserCard key={employee.id} employee={employee} />
                         ))}
                     </div>
-                </section>
+                )}
+            </section>
 
             </div>
         </div>
