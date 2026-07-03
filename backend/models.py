@@ -22,6 +22,8 @@ class Employee(Base):
     department_id = Column(Integer, ForeignKey("departments.id"), nullable=False)
     start_date = Column(Date, nullable=False)
     created_at = Column(TIMESTAMP, server_default=func.now())
+    role = Column(Enum("newbie", "hr"), nullable=False, default="newbie")
+    password_hash = Column(String(255), nullable=False, default="")
 
     department = relationship("Department", back_populates="employees")
     checklist_progress = relationship("EmployeeChecklistProgress", back_populates="employee")

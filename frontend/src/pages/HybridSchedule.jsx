@@ -1,16 +1,17 @@
 import { useState, useEffect } from "react";
 import ScheduleCard from "../components/ScheduleCard";
+import { getUser } from "../auth";
 import {
     getTodaySchedule,
     getTodayScheduleByLocation,
     getEmployeeSchedule,
 } from "../api";
 
-const CURRENT_EMPLOYEE_ID = 1;
 
 const WEEKDAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
 export default function HybridSchedule() {
+    const CURRENT_EMPLOYEE_ID = getUser().id;
     const [schedule, setSchedule] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
