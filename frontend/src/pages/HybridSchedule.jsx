@@ -22,7 +22,7 @@ export default function HybridSchedule() {
 
     const todayName = new Date().toLocaleDateString("en-US", { weekday: "long" });
 
-    const todayLabel = new Date().toLocaleDateString("en-EN", {
+    const todayLabel = new Date().toLocaleDateString("en-US", {
         weekday: "long",
         day: "numeric",
         month: "long",
