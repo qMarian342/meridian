@@ -7,6 +7,7 @@ need on day one, in one place:
 - **My First Week** — a personal onboarding checklist you can tick off (setup Slack, meet HR, etc.).
 - **Team Directory** — every colleague with their department and role.
 - **Hybrid Schedule** — who is in the office today and who is remote, with an office/remote filter.
+- **HR Panel**: a role-restricted area where HR adds employees, manages checklist tasks, and edits weekly schedules.
 
 ---
 
@@ -17,6 +18,8 @@ need on day one, in one place:
 | Backend   | Python, FastAPI, SQLAlchemy ORM     |
 | Database  | MySQL                               |
 | Frontend  | React (Vite), functional components + Hooks |
+| Auth      | Email and password login, bcrypt password hashes |
+
 
 ---
 
@@ -83,7 +86,7 @@ Start the API:
 uvicorn main:app --reload
 ```
 
-The API now runs at **http://127.0.0.1:8000**.
+The API now runs at **http://localhost:5173**.
 Interactive API docs (Swagger UI) are at **http://127.0.0.1:8000/docs**.
 
 ### 2. Frontend
@@ -101,40 +104,53 @@ to be running at `http://127.0.0.1:8000` (this is why the backend is started fir
 
 ---
 
+### 3. Logging in
+
+The seed script creates two accounts you can use right away:
+
+| Role          | Email                        | Password    |
+| ------------- | ---------------------------- | ----------- |
+| HR            | elena.radu@meridian.co       | hr123       |
+| New hire      | marian.ionescu@meridian.co   | newbie123   |
+
+Log in as the new hire to see the standard onboarding experience. Log in as HR
+to see the same app plus the HR Panel in the navigation.
+---
+
 ## Project structure
 
 ```
 meridian/
-	-backend/
-		main.py            # FastAPI app + CORS + router registration
-		database.py        # MySQL connection and session factory
-		models.py          # SQLAlchemy models (the database tables)
-		schemas.py         # Pydantic schemas (request/response shapes)
-		seed.py            # Creates tables and inserts sample data
-		requirements.txt
+  backend/
+    main.py            # FastAPI app, CORS, router registration
+    database.py        # MySQL connection and session factory
+    models.py          # SQLAlchemy models (the database tables)
+    schemas.py         # Pydantic schemas (request and response shapes)
+    auth_utils.py      # Password hashing and verification (bcrypt)
+    seed.py            # Creates tables and inserts sample data
+    requirements.txt
+    routers/
+      auth.py          # /auth/login
+      employees.py     # /employees
+      checklist.py     # /checklist
+      schedule.py      # /schedule
+      departments.py   # /departments
+      hr.py            # /hr, HR-only actions
 
-		-routers/
-			employees.py    # /employees endpoints
-			checklist.py    # /checklist endpoints
-			schedule.py     # /schedule endpoints
-
-	-frontend/
-		src/
-			components/      # Reusable UI (UserCard, ChecklistItem, ScheduleCard)
-			pages/           # Dashboard, TeamDirectory, HybridSchedule
-			api.js           # All fetch calls to the backend
-			...
+  frontend/
+    src/
+      components/      # UserCard, ChecklistItem, ScheduleCard, ProtectedRoute
+      pages/           # Login, Dashboard, TeamDirectory, HybridSchedule, HrPanel
+      api.js           # All fetch calls to the backend
+      auth.js          # Reads the current user from local storage
+      AuthContext.jsx  # Login state shared across the app
+      App.jsx          # Routes and navigation
+      main.jsx
 ```
-
 ---
 
 ## Notes
 
-- **No authentication.** Auth was left out of the MVP. The app
-  assumes a single logged-in user, hardcoded as `CURRENT_EMPLOYEE_ID = 1` in the
-  frontend — this is the seeded new hire (Marian Ionescu, Engineering). The
-  reasoning behind this and other choices is documented in `ASSUMPTIONS.md` and
-  `DECISIONS.md`.
 - **"Today" on weekends.** Schedules only cover Monday–Friday, so the "who's in
   today" view is empty on Saturdays and Sundays. The UI shows a friendly empty
   state in that case.
