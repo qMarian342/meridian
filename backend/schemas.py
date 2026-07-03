@@ -63,3 +63,50 @@ class TodayScheduleOut(BaseModel):
     class Config:
         from_attributes = True
 
+
+class LoginIn(BaseModel):
+    email: EmailStr
+    password: str
+
+class LoginOut(BaseModel):
+    id: int
+    full_name: str
+    email: str
+    role: str
+    role_title: str
+    department: DepartmentOut
+
+    class Config:
+        from_attributes = True
+
+class ChecklistTaskCreate(BaseModel):
+    title: str
+    description: Optional[str] = None
+    display_order: int = 0
+
+class ChecklistTaskOut(BaseModel):
+    id: int
+    title: str
+    description: Optional[str] = None
+    display_order: int
+
+    class Config:
+        from_attributes = True
+
+class ScheduleUpdateIn(BaseModel):
+    day_of_week: str
+    location: str
+
+class EmployeeCreateFull(BaseModel):
+    full_name: str
+    email: EmailStr
+    role_title: str
+    department_id: int
+    start_date: date
+    password: str
+    role: str = "newbie"
+
+class ChecklistTaskUpdate(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    display_order: Optional[int] = None

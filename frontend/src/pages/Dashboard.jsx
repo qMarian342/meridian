@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import UserCard from "../components/UserCard";
 import ChecklistItem from "../components/ChecklistItem";
 import ScheduleCard from "../components/ScheduleCard";
+import { getUser } from "../auth";
+
 import {
     getAllEmployees,
     getChecklistForEmployee,
@@ -9,9 +11,8 @@ import {
     updateChecklistItem,
 } from "../api";
 
-const CURRENT_EMPLOYEE_ID = 1;
-
 export default function Dashboard() {
+    const CURRENT_EMPLOYEE_ID = getUser().id;
     const [employees, setEmployees] = useState([]);
     const [checklist, setChecklist] = useState([]);
     const [schedule, setSchedule] = useState([]);
@@ -55,7 +56,7 @@ export default function Dashboard() {
                 )
             );
         } catch (err) {
-            alert("Couldn't load task. Try again!");
+            setError(err.message);
         }
     }
 
